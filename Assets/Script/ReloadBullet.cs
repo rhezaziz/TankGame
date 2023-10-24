@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class ReloadBullet : MonoBehaviour
+using Complete;
+public class ReloadBullet : MonoBehaviour, IGiveBuff
 {
-    // Start is called before the first frame update
-    void Start()
+    public void GiveBuff(GameObject player)
     {
-        
-    }
+        TankShooting tankShooting = player.GetComponent<TankShooting>();
+        int ammo = player.GetComponent<Player>()._profil.magazine;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        tankShooting.setCountBullet(ammo);
+
+        gameObject.SetActive(false);
     }
 }

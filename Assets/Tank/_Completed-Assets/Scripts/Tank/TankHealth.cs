@@ -126,12 +126,12 @@ namespace Complete
             // Turn the tank off.
             gameObject.SetActive (false);
 
-            Invoke("OnAlive", spawnTime);
+            Invoke("Spawn", spawnTime);
             jmlDead += 1;
             UIPlayer.instance.updateInfo("Dead", jmlDead);
         }
 
-        void OnAlive()
+        void Spawn()
         {
             m_Dead = false;
 
@@ -148,7 +148,7 @@ namespace Complete
                 yield return new WaitForSeconds(1f);
                 timer -= 1;
             }
-            OnAlive();
+            Spawn();
         }
     }
 }

@@ -44,6 +44,9 @@ namespace Complete
 
             // The rate that the launch force charges up is the range of possible forces by the max charge time.
             m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
+
+            UIPlayer.instance.updateInfo("Bullet", bulletCount);
+
         }
 
 
@@ -119,7 +122,7 @@ namespace Complete
             m_CurrentLaunchForce = m_MinLaunchForce;
             setCountBullet(-1);
 
-            UIPlayer.instance.updateInfo("Bullet", bulletCount);
+            
         }
 
 
@@ -135,7 +138,7 @@ namespace Complete
             {
                 bulletCount = 0;
             }
-
+            UIPlayer.instance.updateInfo("Bullet", bulletCount);
             return bulletCount;          
         }
 

@@ -9,19 +9,11 @@ public class UIPlayer : MonoBehaviour
 
     public GameObject parentInfo;
 
-    TMPro.TMP_Text jmlHealth, jmlBullet, jmlDead;
+    public TMPro.TMP_Text jmlHealth, jmlBullet, jmlDead;
 
     private void Awake()
     {
         instance = this;
-    }
-
-    private void Start()
-    {
-        jmlHealth = parentInfo.transform.Find("Health").GetComponentInChildren<TMPro.TMP_Text>();
-        jmlDead = parentInfo.transform.Find("Dead").GetComponentInChildren<TMPro.TMP_Text>();
-        jmlBullet = parentInfo.transform.Find("Bullet").GetComponentInChildren<TMPro.TMP_Text>();
-
     }
 
     public void startInfo(float Health, float Bullet)
@@ -36,7 +28,7 @@ public class UIPlayer : MonoBehaviour
         switch(infoValue)
         {
             case "Health":
-                jmlHealth.text = value.ToString();
+                jmlHealth.text = Mathf.Abs(value).ToString();
                 break;
 
             case "Dead":

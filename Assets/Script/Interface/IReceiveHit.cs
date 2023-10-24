@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IReceiveHit
 {
-    public void Damage(GameObject Bullet);
+    public void Damage(float damaegeBullet);
 }

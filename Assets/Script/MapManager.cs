@@ -8,26 +8,26 @@ public class MapManager : MonoBehaviour
     public static MapManager instance;
 
 
-    public Material Break, UnBreak;
-    public GameObject Wall, SideWall, spawnObject;
-
+    public Material Break, UnBreak, Tower;
+    //public GameObject Wall, SideWall, spawnObject, Tower;
+    public GameObject wall, ground;
     public static MapManager Instance { get { return instance; } }
 
 
     public GameObject overlayPrefab;
     public GameObject overlayContainer;
     public CharacterInfo character;
-    public Dictionary<Vector3Int, Wall> map;
-
+    //public Dictionary<Vector3Int, Wall> map;
+    public List<Vector3Int> map;
     GameObject tempPrefabs;
 
     void Start()
     {
         var tileMaps = gameObject.transform.GetComponentsInChildren<Tilemap>().OrderByDescending(z => z.GetComponent<TilemapRenderer>().sortingOrder);
         //ObjectInteraction interaction = gameObject.transform.GetComponentInChildren<ObjectInteraction>();
-        map = new Dictionary<Vector3Int, Wall>();
-        Debug.Log(tileMaps);
-        Debug.Log(map);
+        map = new List<Vector3Int>();
+        //Debug.Log(tileMaps);
+      //  Debug.Log(map);
         foreach (var tm in tileMaps)
         {
             BoundsInt bounds = tm.cellBounds;
@@ -46,32 +46,18 @@ public class MapManager : MonoBehaviour
                         if (tm.HasTile(new Vector3Int(x, y, z)))
                         {
 
-                            if (!map.ContainsKey(new Vector3Int(x, y, z)))
+                            if (!map.Contains(new Vector3Int(x, y, z)))
                             {
-
-                                if (tm.tag == "SideWall")
-                                {
-                                    tempPrefabs = SideWall;
-                                }
-                                else if (tm.tag == "Wall")
-                                {
-                                    tempPrefabs = Wall;
-                                    
-                                }
-                                else
+                                if(tm.tag == "Ground")
                                 {
                                     continue;
                                 }
-
-
-                                var overlayTile = Instantiate(tempPrefabs, overlayContainer.transform);
+                                
+                                var overlayTile = Instantiate(wall, overlayContainer.transform);
+                                changeWall(overlayTile, tm.tag);
                                 var cellWorldPosition = tm.GetCellCenterWorld(new Vector3Int(x, y, z));
                                 overlayTile.AddComponent<Collider>();
                                 overlayTile.transform.position = new Vector3(cellWorldPosition.x, cellWorldPosition.y, cellWorldPosition.z);
-                                //overlayTile.GetComponent<SpriteRenderer>().sortingOrder = tm.GetComponent<TilemapRenderer>().sortingOrder;
-                              //  overlayTile.gameObject.GetComponent<Wall>().gridLocation = new Vector3Int(x, y, z);
-
-
                             }
                         }
                     }
@@ -79,5 +65,33 @@ public class MapManager : MonoBehaviour
             }
         }
         //character.getTile();
+    }
+
+    void changeWall(GameObject wall, string valueWall)
+    {
+        Material temp = null;
+        switch (valueWall)
+        {
+            case "SideWall":
+                temp = UnBreak;
+                wall.AddComponent<Wall>();
+                break;
+
+            case "Tower":
+                temp = Tower;
+                break;
+
+            case "BreakWall":
+                temp = Break;
+                break;
+
+            case "Wall":
+                bool isBreak = Random.Range(0, 1) == 1;
+                temp = isBreak ? Break : UnBreak;
+                wall.AddComponent<Wall>();
+                break;
+
+        }
+        wall.GetComponent<MeshRenderer>().material = temp;
     }
 }
