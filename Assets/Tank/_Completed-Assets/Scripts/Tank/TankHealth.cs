@@ -20,6 +20,7 @@ namespace Complete
         private float m_CurrentHealth;                      // How much health the tank currently has.
         private bool m_Dead;                                // Has the tank been reduced beyond zero health yet?
         private Transform spawnPosition;
+        private int jmlDead = 0;
 
 
         [SerializeField] private float spawnTime;
@@ -47,6 +48,8 @@ namespace Complete
             m_CurrentHealth = profil._profil.Heath;
             m_Dead = false;
 
+            UIPlayer.instance.updateInfo("Health", m_CurrentHealth);
+
             // Update the health slider's value and color.
             SetHealthUI();
         }
@@ -61,6 +64,7 @@ namespace Complete
         public void HealTank(float heal)
         {
             m_CurrentHealth = checkHealth(heal);
+            UIPlayer.instance.updateInfo("Health", m_CurrentHealth);
         }
 
         
@@ -80,8 +84,11 @@ namespace Complete
             // Reduce current health by the amount of damage done.
             m_CurrentHealth -= amount;
 
+
+            UIPlayer.instance.updateInfo("Health", m_CurrentHealth);
+
             // Change the UI elements appropriately.
-            SetHealthUI ();
+            SetHealthUI();
 
             // If the current health is at or below zero and it has not yet been registered, call OnDeath.
             if (m_CurrentHealth <= 0f && !m_Dead)
@@ -120,8 +127,8 @@ namespace Complete
             gameObject.SetActive (false);
 
             Invoke("OnAlive", spawnTime);
-
-
+            jmlDead += 1;
+            UIPlayer.instance.updateInfo("Dead", jmlDead);
         }
 
         void OnAlive()

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float currentHealth, currentSpeed, currentDamage;
+    public float currentHealth, currentSpeed, currentDamage, jmlDead;
 
     public profil _profil;
 
@@ -21,8 +21,14 @@ public class Player : MonoBehaviour
     void Start()
     {
         initValueTankPlayer();
+
+
     }
 
+    private void OnEnable()
+    {
+        UIPlayer.instance.startInfo(_profil.Heath, _profil.magazine);
+    }
 
     private void OnTriggerEnter(Collider other)
     {

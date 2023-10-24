@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Complete
@@ -24,6 +25,7 @@ namespace Complete
         private float m_CurrentLaunchForce;         // The force that will be given to the shell when the fire button is released.
         private float m_ChargeSpeed;                // How fast the launch force increases, based on the max charge time.
         private bool m_Fired;                       // Whether or not the shell has been launched with this button press.
+        private bool buffDamage;
 
 
         private void OnEnable()
@@ -85,6 +87,18 @@ namespace Complete
         }
 
 
+        public void doubleDamage()
+        {
+            buffDamage = true;
+        }
+
+        IEnumerator timerBuff(float timer = 5f)
+        {
+            yield return new WaitForSeconds (timer);
+
+
+        }
+
         private void Fire ()
         {
             // Set the fired flag so only Fire is only called once.
@@ -104,6 +118,8 @@ namespace Complete
             // Reset the launch force.  This is a precaution in case of missing button events.
             m_CurrentLaunchForce = m_MinLaunchForce;
             setCountBullet(-1);
+
+            UIPlayer.instance.updateInfo("Bullet", bulletCount);
         }
 
 
