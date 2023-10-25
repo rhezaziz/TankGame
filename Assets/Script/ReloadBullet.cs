@@ -6,7 +6,7 @@ public class ReloadBullet : MonoBehaviour, IGiveBuff
 {
     public void GiveBuff(GameObject player)
     {
-        TankShooting tankShooting = player.GetComponent<TankShooting>();
+        Shoot tankShooting = player.GetComponent<Shoot>();
         int ammo = player.GetComponent<Player>()._profil.magazine;
 
         tankShooting.setCountBullet(ammo);

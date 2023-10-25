@@ -97,10 +97,15 @@ namespace Complete
 
         IEnumerator timerBuff(float timer = 5f)
         {
-            while (bulletCount != 0)
+            while (bulletCount != 0 && buffDamage)
             {
+                //Dagame
+                yield return new WaitForSeconds(timer);
 
+                buffDamage = false;
             }
+
+            buffDamage = false;
         }
 
         private void Fire ()

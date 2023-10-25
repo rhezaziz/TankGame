@@ -6,7 +6,7 @@ public class SpawnManager : MonoBehaviour
 {
     public GameObject[] buff;
     public GameObject[] bullet;
-
+    public GameObject[] spawnPosition;
 
     [SerializeField] private float timerBuff;
     [SerializeField] private float timerBullet;
