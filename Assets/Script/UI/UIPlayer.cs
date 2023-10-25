@@ -13,6 +13,7 @@ public class UIPlayer : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("Awake");
         instance = this;
     }
 

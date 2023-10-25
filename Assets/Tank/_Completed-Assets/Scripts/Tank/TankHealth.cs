@@ -47,7 +47,7 @@ namespace Complete
             //m_CurrentHealth = m_StartingHealth;
             m_CurrentHealth = profil._profil.Heath;
             m_Dead = false;
-
+            
             UIPlayer.instance.updateInfo("Health", m_CurrentHealth);
 
             // Update the health slider's value and color.
