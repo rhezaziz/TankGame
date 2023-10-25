@@ -97,9 +97,10 @@ namespace Complete
 
         IEnumerator timerBuff(float timer = 5f)
         {
-            yield return new WaitForSeconds (timer);
+            while (bulletCount != 0)
+            {
 
-
+            }
         }
 
         private void Fire ()

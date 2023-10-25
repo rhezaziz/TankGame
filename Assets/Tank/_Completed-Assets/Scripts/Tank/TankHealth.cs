@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Complete
 {
-    public class TankHealth : MonoBehaviour
+    public class TankHealth : MonoBehaviour, IReceiveHit
     {
         public float m_StartingHealth = 200f;               // The amount of health each tank starts with.
         public Slider m_Slider;                             // The slider to represent how much health the tank currently has.
@@ -77,6 +77,10 @@ namespace Complete
                 return m_StartingHealth;
             }
             return m_CurrentHealth;
+        }
+
+        public void Damage(float damage){
+            TakeDamage(damage);
         }
 
         public void TakeDamage (float amount)
