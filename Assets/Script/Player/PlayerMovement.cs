@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float m_Speed = 12f;                 // How fast the tank moves forward and back.
     public float m_TurnSpeed = 180f;
-
+    float r;
     [SerializeField] float Speed;
 
     private void Start()
@@ -29,8 +29,8 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         MovePlayer();
-        //TurnHorizontal();
-        //TurnVertical();
+        TurnHorizontal();
+        TurnVertical();
     }
 
     void MovePlayer()
@@ -38,6 +38,8 @@ public class PlayerMovement : MonoBehaviour
         Vector2 direction = moveAction.ReadValue<Vector2>();
 
         transform.position += new Vector3(direction.x, 0, direction.y) * Time.deltaTime * Speed;
+
+        Debug.Log(direction);
     }
 
     public void buffSpeed()
@@ -50,27 +52,37 @@ public class PlayerMovement : MonoBehaviour
     private void TurnVertical()
     {
         Vector2 direction = moveAction.ReadValue<Vector2>();
-        // Determine the number of degrees to be turned based on the input, speed and time between frames.
-        float turn = direction.x * m_TurnSpeed * Time.deltaTime;
 
-        // Make this into a rotation in the y axis.
-        Quaternion turnRotation = Quaternion.Euler(0f, Mathf.Clamp(turn, 180f, -180f), 0f);
+        if (direction.y != 0)
+        {
+            
+            float Target = direction.y * 180f;
 
-        // Apply this rotation to the rigidbody's rotation.
-        rb.MoveRotation(rb.rotation * turnRotation);
+            if(!(Target < 0))
+            {
+                Target = 0f;
+            }
+
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, Target, ref r, 0.1f);
+
+            transform.rotation = Quaternion.Euler(0, angle, 0);
+        }
     }
 
     private void TurnHorizontal()
     {
         Vector2 direction = moveAction.ReadValue<Vector2>();
-        // Determine the number of degrees to be turned based on the input, speed and time between frames.
-        float turn = direction.y * m_TurnSpeed * Time.deltaTime;
 
-        // Make this into a rotation in the y axis.
-        Quaternion turnRotation = Quaternion.Euler(0f, Mathf.Clamp(turn, -90f, 90f), 0f);
+        if(direction.x != 0)
+        {
+           
+            float Target = direction.x * 90f;
+            
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, Target, ref r, 0.1f);
 
-        // Apply this rotation to the rigidbody's rotation.
-        rb.MoveRotation(rb.rotation * turnRotation);
+            transform.rotation = Quaternion.Euler(0, angle, 0);
+        }
+
     }
 
     IEnumerator timerBuff(float timer = 5f)
