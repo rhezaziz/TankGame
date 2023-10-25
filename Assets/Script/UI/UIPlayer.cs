@@ -44,6 +44,4 @@ public class UIPlayer : MonoBehaviour
                 break;
         }
     }
-
-
 }

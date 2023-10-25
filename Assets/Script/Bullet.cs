@@ -19,8 +19,13 @@ public class Bullet : MonoBehaviour
             IReceiveHit hit = other.GetComponent<IReceiveHit>();
             //partikel.SetActive(true);
             //partikel.transform.localPosition = Vector3.zero;
-            Destroy(gameObject);
+            partikel.SetActive(true);
+            //.MainModule mainModule = partikel.main;
+            //Destroy(partikel.gameObject, mainModule.duration);
+            //Destroy(partikel, 0.1f);
             hit.Damage(damage);
+            Destroy(gameObject, 0.1f);
+            
         }
     }
 }

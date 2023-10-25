@@ -8,6 +8,7 @@ public class Tower : MonoBehaviour, IReceiveHit
 
     [SerializeField] private float HealthTower;
 
+    public GameObject gameOver;
     public float currentHealth;
     public GameObject particel;
 
@@ -26,6 +27,8 @@ public class Tower : MonoBehaviour, IReceiveHit
     void GameOver()
     {
         Debug.Log("Game Over");
+        gameOver = GameObject.Find("GameOver").transform.GetChild(0).gameObject;
+        gameOver.SetActive(true);
     }
     
     private void OnEnable()

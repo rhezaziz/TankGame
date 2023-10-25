@@ -8,7 +8,7 @@ public class MapManager : MonoBehaviour
     public static MapManager instance;
 
 
-    public Material Break, UnBreak, Tower;
+    public GameObject SideWall, Break, UnBreak, Tower, temp;
     //public GameObject Wall, SideWall, spawnObject, Tower;
     public GameObject wall, ground;
     public static MapManager Instance { get { return instance; } }
@@ -20,10 +20,10 @@ public class MapManager : MonoBehaviour
     //public Dictionary<Vector3Int, Wall> map;
     public List<Vector3Int> map;
     GameObject tempPrefabs;
-
+    public int jml;
     void Start()
     {
-        var tileMaps = gameObject.transform.GetComponentsInChildren<Tilemap>().OrderByDescending(z => z.GetComponent<TilemapRenderer>().sortingOrder);
+        var tileMaps = gameObject.transform.GetComponentsInChildren<Tilemap>().OrderByDescending(x => x.GetComponent<TilemapRenderer>().sortingOrder);
         //ObjectInteraction interaction = gameObject.transform.GetComponentInChildren<ObjectInteraction>();
         map = new List<Vector3Int>();
         //Debug.Log(tileMaps);
@@ -45,18 +45,30 @@ public class MapManager : MonoBehaviour
                         // Debug.Log("X = " + x);
                         if (tm.HasTile(new Vector3Int(x, y, z)))
                         {
-
+                            Debug.Log(tm.tag);
                             if (!map.Contains(new Vector3Int(x, y, z)))
                             {
+                                jml += 1;
                                 if(tm.tag == "Ground")
                                 {
+                                    var temp = tm.GetCellCenterWorld(new Vector3Int(x, y, z));
+
+                                    if (SpawnManager.instance.spawnPosition.Contains(temp))
+                                        SpawnManager.instance.spawnPosition.Remove(temp);
+                                    else
+                                        SpawnManager.instance.spawnPosition.Add(temp);
+                                    
                                     continue;
                                 }
                                 
-                                var overlayTile = Instantiate(wall, overlayContainer.transform);
-                                changeWall(overlayTile, tm.tag);
+                                var overlayTile = Instantiate(prefabs(tm.tag), overlayContainer.transform);
+                                //changeWall(overlayTile, tm.tag);
                                 var cellWorldPosition = tm.GetCellCenterWorld(new Vector3Int(x, y, z));
-                                overlayTile.AddComponent<Collider>();
+                                SpawnManager.instance.spawnPosition.Remove(cellWorldPosition);
+                                //Debug.Log(cellWorldPosition);
+                                SpawnManager.instance.spawnPosition.Add(cellWorldPosition);
+                                if (overlayTile.GetComponent<Collider>() == null)
+                                    overlayTile.AddComponent<Collider>();
                                 overlayTile.transform.position = new Vector3(cellWorldPosition.x, cellWorldPosition.y, cellWorldPosition.z);
                             }
                         }
@@ -67,31 +79,27 @@ public class MapManager : MonoBehaviour
         //character.getTile();
     }
 
-    void changeWall(GameObject wall, string valueWall)
+    GameObject prefabs(string valueWall)
     {
-        Material temp = null;
-        switch (valueWall)
+        if(valueWall == "SideWall")
         {
-            case "SideWall":
-                temp = UnBreak;
-                wall.AddComponent<Wall>();
-                break;
-
-            case "Tower":
-                temp = Tower;
-                break;
-
-            case "BreakWall":
-                temp = Break;
-                break;
-
-            case "Wall":
-                bool isBreak = Random.Range(0, 1) == 1;
-                temp = isBreak ? Break : UnBreak;
-                wall.AddComponent<Wall>();
-                break;
-
+            temp = SideWall;
         }
-        wall.GetComponent<MeshRenderer>().material = temp;
+        else if(valueWall == "Tower")
+        {
+            temp = Tower;
+        }
+
+        else if(valueWall == "BreakWall")
+        {
+            temp = Break;
+        }
+
+        else if(valueWall == "UnBreak")
+        {
+            temp = UnBreak;
+        }
+
+        return temp;
     }
 }

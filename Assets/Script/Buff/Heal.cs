@@ -6,6 +6,13 @@ public class Heal : MonoBehaviour, IGiveBuff
 {
     [SerializeField] private float healValue;
 
+    public Vector3 position;
+    private void OnEnable()
+    {
+        position = this.transform.position;
+    }
+
+
     public void GiveBuff(GameObject player)
     {
         //Player profil = player.GetComponent<Player>();
@@ -18,6 +25,12 @@ public class Heal : MonoBehaviour, IGiveBuff
         TankHealth tankHealth = player.GetComponent<TankHealth>();
 
         tankHealth.HealTank(healValue);
+
+        SpawnManager.instance.spawnObject.Remove(position);
+
+        SpawnManager.instance.startCountSpawnBuff();
+
+        //SpawnManager.instance.spawnObject.Remove(position);
 
         gameObject.SetActive(false);
     }

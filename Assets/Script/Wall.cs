@@ -1,49 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Wall : MonoBehaviour, IReceiveHit
 {
     // Start is called before the first frame update
 
-    public bool isBreak;
+    public bool isBreak = false;
 
-    [SerializeField] private float HealthWall;
+    [SerializeField] private float HealthWall = 100;
 
     public float currentHealth;
 
 
     public void Damage(float damage)
     {
-
-        currentHealth -= damage;
-
-        if (currentHealth <= 0)
+        if (isBreak)
         {
-            gameObject.SetActive(false);
+            currentHealth -= damage;
+
+            if (currentHealth <= 0)
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 
-
-    void breakWall()
-    {
-
-    }
-
-
-    void getDamage(float damage)
-    {
-        
-    }
-
-    private void OnEnable()
-    {
-        currentHealth = HealthWall;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

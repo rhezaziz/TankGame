@@ -12,6 +12,7 @@ public class Shoot : MonoBehaviour
     public float shootForce;
     public int bulletCount;
     
+    
     private float m_shootRateTimeStamp;
     private int maxBullet;
     private bool buffDamage;
@@ -45,7 +46,6 @@ public class Shoot : MonoBehaviour
                 setCountBullet(-1);
                 UIPlayer.instance.updateInfo("Bullet", bulletCount);
             }
-            
         }
     }
 
